@@ -103,26 +103,30 @@ yarn start
 
 ## Project Structure
 
-```
 currency-page/
 ├── src/
-│   ├── app/
-│   │   ├── api/
-│   │   │   ├── latest-rate/
-│   │   │   │   └── route.ts          # Latest rate API endpoint
-│   │   │   └── historical-rate/
-│   │   │       └── route.ts          # Historical data API endpoint
-│   │   ├── layout.tsx                # Root layout
-│   │   ├── page.tsx                  # Home page
-│   │   └── globals.css               # Global styles
-│   └── components/
-│       ├── AppContainer.tsx          # Main container with tab navigation
-│       ├── CurrencySearch.tsx        # Latest rate search component
-│       └── DateSearch.tsx            # Historical search component
-├── .env.example                      # Environment variables template
+│ ├── app/
+│ │ ├── api/
+│ │ │ ├── latest-rate/
+│ │ │ │ └── route.ts # Latest rate API endpoint
+│ │ │ └── historical-rate/
+│ │ │ └── route.ts # Historical data API endpoint
+│ │ ├── layout.tsx # Root layout
+│ │ ├── page.tsx # Home page
+│ │ └── globals.css # Global styles
+│ ├── components/
+│ │ ├── AppContainer.tsx # Main container with tab navigation
+│ │ ├── CurrencySearch.tsx # Latest rate search component
+│ │ ├── DateSearch.tsx # Historical search component
+│ │ └── HistoricalDataTable.tsx # Table for displaying historical data
+│ ├── hooks/
+│ │ ├── useLatestRate.ts # Hook for fetching and caching latest rates
+│ │ └── useHistoricalData.ts # Hook for fetching and caching historical data
+│ └── types/
+│ └── currency.ts # Type definitions for currency data
+├── .env.example # Environment variables template
 ├── package.json
 └── README.md
-```
 
 ## Troubleshooting
 
