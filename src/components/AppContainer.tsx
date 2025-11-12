@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import CurrencySearch from './CurrencySearch';
-import HistoricalSearch from './DateSearch';
+import DateSearch from './DateSearch';
 
 type ViewMode = 'latest' | 'date-range';
 
@@ -11,21 +11,27 @@ const AppContainer = () => {
 
   const getButtonClasses = (mode: ViewMode) => {
     const isActive = activeView === mode;
-    return `px-6 py-3 text-lg font-semibold rounded-t-lg transition-all duration-200 
+    return `px-5 py-3 text-base sm:text-lg font-semibold rounded-t-xl transition-all duration-200 relative z-10 
             ${isActive 
-              ? 'bg-white text-blue-600 shadow-sm border-b-4 border-blue-600' 
+              ? 'bg-white text-blue-600 shadow-inner border-b-4 border-blue-600' 
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800 border-b-4 border-transparent'
             }`;
   };
 
   return (
     <div className="max-w-6xl mx-auto my-12">
-      {/* Tab Navigation */}
-      <div className="flex justify-start border-b-2 border-gray-200 mb-0 bg-gray-50 rounded-t-lg">
+      
+      <div 
+        className="flex justify-start border-b-2 border-gray-200 mb-0 bg-gray-50 rounded-t-xl overflow-hidden" 
+        role="tablist"
+      >
         <button
           onClick={() => setActiveView('latest')}
           className={getButtonClasses('latest')}
-          aria-pressed={activeView === 'latest'}
+          role="tab" 
+          aria-selected={activeView === 'latest'} 
+          tabIndex={activeView === 'latest' ? 0 : -1}
+          id="latest-tab" 
         >
           <span className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -37,7 +43,10 @@ const AppContainer = () => {
         <button
           onClick={() => setActiveView('date-range')}
           className={getButtonClasses('date-range')}
-          aria-pressed={activeView === 'date-range'}
+          role="tab" // Accessibility role
+          aria-selected={activeView === 'date-range'} // Accessibility state
+          tabIndex={activeView === 'date-range' ? 0 : -1} // Keyboard navigation
+          id="historical-tab" // Used for aria-labelledby
         >
           <span className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -48,9 +57,12 @@ const AppContainer = () => {
         </button>
       </div>
 
-      {/* Content Area */}
-      <div className="bg-gray-50 p-6 rounded-b-lg shadow-lg">
-        {activeView === 'latest' ? <CurrencySearch /> : <HistoricalSearch />}
+      <div 
+        className="bg-white p-4 sm:p-8 rounded-b-xl shadow-2xl border border-t-0 border-gray-100"
+        role="tabpanel"
+        aria-labelledby={activeView === 'latest' ? 'latest-tab' : 'historical-tab'}
+      >
+        {activeView === 'latest' ? <CurrencySearch /> : <DateSearch />}
       </div>
     </div>
   );

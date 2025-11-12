@@ -17,9 +17,9 @@ interface CacheEntry {
   timestamp: number;
 }
 
-const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; 
 
-const DateSearch = () => {
+const DateSearch = () => { 
   const [currencyCode, setCurrencyCode] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
@@ -28,7 +28,6 @@ const DateSearch = () => {
   const [error, setError] = useState<string | null>(null);
   const [isFromCache, setIsFromCache] = useState<boolean>(false);
 
-  // Cache stored in ref to persist across renders
   const cache = useRef<Map<string, CacheEntry>>(new Map());
 
   const getCachedData = (code: string): HistoricalData | null => {
@@ -120,10 +119,11 @@ const DateSearch = () => {
 
       <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 mb-6 items-end">
         <div className="flex-1 w-full">
-          <label className="text-sm font-medium text-gray-700 block mb-1">
+          <label htmlFor="currency-code-historical" className="text-sm font-medium text-gray-700 block mb-1">
             Currency Code <span className="text-red-500">*</span>
           </label>
           <input
+            id="currency-code-historical"
             type="text"
             value={currencyCode}
             onChange={(e) => setCurrencyCode(e.target.value.toUpperCase())}
@@ -140,10 +140,11 @@ const DateSearch = () => {
         </div>
 
         <div className="flex-1 w-full">
-          <label className="text-sm font-medium text-gray-700 block mb-1">
+          <label htmlFor="start-date" className="text-sm font-medium text-gray-700 block mb-1">
             Start Date <span className="text-red-500">*</span>
           </label>
           <input
+            id="start-date"
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
@@ -154,10 +155,11 @@ const DateSearch = () => {
         </div>
 
         <div className="flex-1 w-full">
-          <label className="text-sm font-medium text-gray-700 block mb-1">
+          <label htmlFor="end-date" className="text-sm font-medium text-gray-700 block mb-1">
             End Date <span className="text-red-500">*</span>
           </label>
           <input
+            id="end-date"
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
@@ -223,7 +225,8 @@ const DateSearch = () => {
 
           <div className="overflow-x-auto border border-gray-200 rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              {/* Sticky header for better scrolling UX */}
+              <thead className="bg-gray-100 sticky top-0"> 
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Date
@@ -236,14 +239,15 @@ const DateSearch = () => {
               <tbody className="bg-white divide-y divide-gray-200">
                 {filteredRates.map(({ date, rate }) => (
                   <tr key={date} className="hover:bg-gray-50 transition">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {/* Increased padding and font size for better readability */}
+                    <td className="px-6 py-3 whitespace-nowrap text-base font-medium text-gray-900">
                       {new Date(date).toLocaleDateString('en-US', { 
                         year: 'numeric', 
                         month: 'short', 
                         day: 'numeric' 
                       })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-mono">
+                    <td className="px-6 py-3 whitespace-nowrap text-base text-gray-700 font-mono">
                       ${rate}
                     </td>
                   </tr>

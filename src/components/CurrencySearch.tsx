@@ -21,8 +21,7 @@ const CurrencySearch = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isFromCache, setIsFromCache] = useState<boolean>(false);
-  
-  // Cache stored in ref to persist across renders without causing re-renders
+
   const cache = useRef<Map<string, CacheEntry>>(new Map());
 
   const getCachedData = (code: string): CurrencyRate | null => {
@@ -56,7 +55,7 @@ const CurrencySearch = () => {
     setRateData(null);
     setIsFromCache(false);
 
-    // Check cache first
+
     const cachedData = getCachedData(currencyCode);
     if (cachedData) {
       setRateData(cachedData);
@@ -93,15 +92,19 @@ const CurrencySearch = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-xl rounded-xl max-w-lg mx-auto my-12 border border-gray-100">
+    <div className="p-4 sm:p-6 bg-white shadow-xl rounded-xl max-w-sm sm:max-w-lg mx-auto my-8 sm:my-12 border border-gray-100">
       <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
         Latest Exchange Rate (vs USD)
       </h2>
       
       <form onSubmit={handleSubmit} className="mb-6">
-        <div className="flex gap-3">
+
+        <div className="flex flex-col sm:flex-row gap-3">
           <div className="flex-grow">
+
+            <label htmlFor="currency-code-latest" className="sr-only">Currency Code (3 letters)</label> 
             <input
+              id="currency-code-latest" 
               type="text"
               value={currencyCode}
               onChange={(e) => setCurrencyCode(e.target.value.toUpperCase())}
@@ -111,7 +114,7 @@ const CurrencySearch = () => {
               disabled={isLoading}
             />
             {currencyCode.length > 0 && currencyCode.length < 3 && (
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-gray-400 mt-1">
                 Enter {3 - currencyCode.length} more character{3 - currencyCode.length !== 1 ? 's' : ''}
               </p>
             )}
@@ -142,15 +145,17 @@ const CurrencySearch = () => {
 
       {rateData && !isLoading && (
         <div className="space-y-4">
-          <div className="p-5 bg-green-50 rounded-lg border border-green-200">
+
+          <div className="p-5 bg-white rounded-lg border border-green-300 shadow-lg">
             <div className="flex items-baseline gap-2 mb-2">
-              <span className="text-lg font-medium text-gray-700">1</span>
-              <span className="text-2xl font-bold text-gray-900">{rateData.currencyCode}</span>
+              <span className="text-xl font-medium text-gray-700">1</span>
+              <span className="text-3xl font-extrabold text-blue-600 tracking-tight">{rateData.currencyCode}</span>
               <span className="text-lg font-medium text-gray-700">=</span>
-              <span className="text-3xl font-extrabold text-green-600">
+
+              <span className="text-4xl font-extrabold text-green-600">
                 ${parseFloat(rateData.usdRate).toFixed(4)}
               </span>
-              <span className="text-lg font-medium text-gray-700">USD</span>
+              <span className="text-xl font-medium text-gray-700">USD</span>
             </div>
             <p className="text-sm text-gray-500">
               Last Refreshed: {new Date(rateData.lastRefreshed).toLocaleString()}
